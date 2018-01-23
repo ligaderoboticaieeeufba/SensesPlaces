@@ -28,8 +28,8 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "AndroidAP ";
-const char* password = "teste123";
+const char* ssid = "C-137";
+const char* password = "livramento501";
 const char* mqtt_server = "iot.eclipse.org";
 
 const char* teste_topico1 = "teste/temperatura/analogico";
@@ -123,6 +123,9 @@ void loop() {
     reconnect();
   }
   client.loop();
+
+  
+
 
   /*
   long now = millis();

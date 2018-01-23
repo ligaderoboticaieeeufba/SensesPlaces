@@ -4,8 +4,8 @@
 
 Thermistor temp(0);
 
-const char* ssid = "AndroidAP";
-const char* password = "teste123";
+const char* ssid = "C-137";
+const char* password = "livramento501";
 const char* mqtt_server = "iot.eclipse.org";
 const char* teste_topico1 = "teste/temperatura/analogico";
 const char* teste_topico2 = "teste/temperatura/celsius";
