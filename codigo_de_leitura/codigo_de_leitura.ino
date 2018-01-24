@@ -80,6 +80,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
+  Serial.println("--------------------");
 
   /*
   // Switch on the LED if an 1 was received as first character
