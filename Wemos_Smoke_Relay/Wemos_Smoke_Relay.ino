@@ -19,7 +19,7 @@ WiFiClient wemosd1mini;
 #include <PubSubClient.h>
 
 const char* mqtt_server = "iot.eclipse.org";
-const char* piezo = "danca/termistor/analogico/fan";
+const char* piezo = "danca/piezo/analogico/fumaca";
 const char* wemos2 = "danca/status/wemos/2/fumaca";
 const char* esp = "fumaca";
 
@@ -91,7 +91,7 @@ void ligaFumaca(int valoranalogico){
  /* O valor de XX deve ser bastante alto, afim de fazer a maquina de fumaça funcionar só em grande
  variação de saída analógica.
 */
-  if (valoranalogico >= 90 ){  
+  if (valoranalogico >= 95 ){  
     digitalWrite(r, HIGH);
     delay(2000);
     digitalWrite(r, LOW);
@@ -117,6 +117,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for(int i = 0; i < length; i++){
     val += (int)payload[i];
   }
+
   val = val - 48;
 
   Serial.println(val);

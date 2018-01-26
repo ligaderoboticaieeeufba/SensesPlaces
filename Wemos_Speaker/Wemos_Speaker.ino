@@ -12,8 +12,8 @@ em: https://github.com/esp8266/Arduino/issues/1243
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "........";
-const char* password = "........";
+const char* ssid = "Marcus";
+const char* password = "vinicius";
 
 WiFiClient wemosd1mini;
 
@@ -52,7 +52,7 @@ void setupWiFi(){
 
   while(WiFi.status() != WL_CONNECTED){
     delay(500);
-    Serial.println(".");
+    Serial.print(".");
     
   }
 
@@ -87,16 +87,18 @@ void reconnect(){
   } 
 }
 
-void passaValor(int valorAnalogico){
+void passaValor(int valor){
   
  /* O valor de XX deve ser bastante alto, afim de fazer a maquina de fumaça funcionar só em grande
  variação de saída analógica.
 */
 
-  if (valorAnalogico >= 800 ){  
+  if (valor >= 100 ){  
     digitalWrite(r, HIGH);
+    Serial.println("estou enviando o sinal.");
   }
-else{
+  else{
+    //Serial.println("Estou desligando o treco.");
     digitalWrite(r, LOW);
   }  
 }
@@ -107,19 +109,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print("]: ");
 
-  for(int i = 0; i < length; i++){
-    Serial.print((char)payload[i]);
-  }
-  Serial.println("");
-  Serial.println("--------------------------");
-
+  //for(int i = 0; i < length; i++){
+    //Serial.print((char)payload[i]);
+  //}
   int val = 0;
 
-  for(int i = 0; i < length; i++){
+ for(int i = 0; i < length; i++){
     val += (int)payload[i];
   }
 
-  passaValor(val);
+  val = val - 48;
+  
+  Serial.println(val);
+  Serial.println("--------------------------");
+
+ passaValor(val);
   
 }
 

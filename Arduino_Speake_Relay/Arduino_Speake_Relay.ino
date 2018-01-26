@@ -9,13 +9,14 @@ tone(), acionará um alto falante.
 Tone tone1;
  
 void setup() {
+  Serial.begin(115200);
   pinMode(12, INPUT);
   tone1.begin(13);
 }
 
 void loop() {
-  digitalRead(12);
-  if(digitalRead(12) == 1){
+  Serial.println(digitalRead(12));
+  if(digitalRead(12) == HIGH){
     tone1.play(900); 
   }
   else {

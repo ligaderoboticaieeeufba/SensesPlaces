@@ -25,8 +25,8 @@ const char* mqtt_ClientID = "wemos1";
 
 #include <ESP8266WiFi.h>
 
-const char* ssid = "AndroidAP";
-const char* password = "teste123";
+const char* ssid = "Marcus";
+const char* password = "vinicius";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -130,7 +130,6 @@ void publicaBatimentos(){
   digitalWrite(pin_seletores[1], HIGH);
   digitalWrite(pin_seletores[2], LOW);
 
-  //heartP();
   //Serial.println("Pino 2 aberto");
 
   analogico_infraRed = analogRead(Z);
@@ -139,7 +138,8 @@ void publicaBatimentos(){
   
   //publica o valor analogico das batidas analogicas
   client.publish(batimento_coracao, String(analogico_infraRed).c_str());
-  delay(1500);
+  delay(500);
+
 }
 
 void publicaVibracoes(){
@@ -171,7 +171,7 @@ void loop() {
   }
   
   //publicaTemperatura();
-  //publicaBatimentos();
-  publicaVibracoes();
+  publicaBatimentos();
+  //publicaVibracoes();
  
 }
