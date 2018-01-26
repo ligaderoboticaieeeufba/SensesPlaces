@@ -16,7 +16,7 @@ void setup() {
 void loop() {
   digitalRead(12);
   if(digitalRead(12) == 1){
-    tone1.play(440); 
+    tone1.play(900); 
   }
   else {
     tone1.stop();
