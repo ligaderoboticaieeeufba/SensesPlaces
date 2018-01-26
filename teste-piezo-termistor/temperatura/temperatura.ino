@@ -1,5 +1,5 @@
 /*
-Esse código é o responsável por abrir as portas no C.I e enviar as medições para os wemos que contra os equipamentos.
+Esse código é o responsável por abrir as portas no C.I e enviar as medições para os wemos que controla os 3 equipamentos.
 
 */
 
@@ -11,11 +11,12 @@ Thermistor temp(0);
 // --- MQTT ---
 
 #include <PubSubClient.h>
+
 const char* mqtt_server = "iot.eclipse.org";
 
 const char* temp_analogico = "danca/termistor/analogico/fan";
-const char* piezo_analogico = "danca/piezo/analogico/";
-const char* batimento_coracao = "danca/infravermelho/analogico/";
+const char* piezo_analogico = "danca/piezo/analogico/fumaca";
+const char* batimento_coracao = "danca/infravermelho/analogico/speaker";
 const char* status1 = "danca/status/dancarino/1";
 
 const char* mqtt_ClientID = "wemos1";
@@ -23,7 +24,6 @@ const char* mqtt_ClientID = "wemos1";
 // --- ESP8266 ---
 
 #include <ESP8266WiFi.h>
-
 
 const char* ssid = "AndroidAP";
 const char* password = "teste123";
@@ -160,8 +160,8 @@ void publicaVibracoes(){
   
   
   //publica o valor analogico do piezo
-  client.publish(piezo_analogico, String(piezo_analogico).c_str());
-  delay(1550);
+  client.publish(temp_analogico, String(analogico_piezo).c_str());
+
 }
 
 void loop() {
@@ -170,8 +170,8 @@ void loop() {
     reconecta();
   }
   
-  publicaTemperatura();
-  publicaBatimentos();
- // publicaVibrações();
+  //publicaTemperatura();
+  //publicaBatimentos();
+  publicaVibracoes();
  
 }

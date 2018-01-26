@@ -10,8 +10,8 @@ em: https://github.com/esp8266/Arduino/issues/1243
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "........";
-const char* password = "........";
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 
 WiFiClient wemosd1mini;
 
@@ -19,7 +19,7 @@ WiFiClient wemosd1mini;
 #include <PubSubClient.h>
 
 const char* mqtt_server = "iot.eclipse.org";
-const char* piezo = "danca/piezo/analogico/fumaca";
+const char* piezo = "danca/termistor/analogico/fan";
 const char* wemos2 = "danca/status/wemos/2/fumaca";
 const char* esp = "fumaca";
 
@@ -50,7 +50,7 @@ void setupWiFi(){
 
   while(WiFi.status() != WL_CONNECTED){
     delay(500);
-    Serial.println(".");
+    Serial.print(".");
     
   }
 
@@ -91,7 +91,7 @@ void ligaFumaca(int valoranalogico){
  /* O valor de XX deve ser bastante alto, afim de fazer a maquina de fumaça funcionar só em grande
  variação de saída analógica.
 */
-  if (valoranalogico >= 900 ){  
+  if (valoranalogico >= 90 ){  
     digitalWrite(r, HIGH);
     delay(2000);
     digitalWrite(r, LOW);
@@ -106,16 +106,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print("]: ");
 
-  for(int i = 0; i < length; i++){
-    Serial.print((char)payload[i]);
-  }
-  Serial.println("--------------------------");
+  //for(int i = 0; i < length; i++){
+   // Serial.print((char)payload[i]);
+  //}
+  //Serial.println("");
+  //Serial.println("--------------------------");
 
   int val = 0;
 
   for(int i = 0; i < length; i++){
     val += (int)payload[i];
   }
+  val = val - 48;
+
+  Serial.println(val);
+  Serial.println("--------------------------------------------");
 
   ligaFumaca(val);
   
