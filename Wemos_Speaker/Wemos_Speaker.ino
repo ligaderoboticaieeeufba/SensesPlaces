@@ -95,10 +95,10 @@ void passaValor(int valorAnalogico){
 
   if (valorAnalogico >= 800 ){  
     digitalWrite(r, HIGH);
-    delay(500);
-    digitalWrite(r, LOW);
   }
-  
+else{
+    digitalWrite(r, LOW);
+  }  
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
