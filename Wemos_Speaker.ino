@@ -1,4 +1,4 @@
-/* Código para ligação do Wemos no Relé e ativação do Alto Falante.
+/* Código para ligação do Wemos no Arduino e ativação do Alto Falante.
 O sensor a ser utilizado para controlar o ALto Falante será o circuito de detectação de Pulso.
 
 Esse Wemos não estará ligado diretamente ao relay e sim a um Arduino Uno que, usando a função
