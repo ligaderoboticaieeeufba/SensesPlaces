@@ -5,8 +5,8 @@
 
 #define pinFio 5
 
-const char* ssid = "AndroidAP";
-const char* password = "teste123";
+const char* ssid = "C-137";
+const char* password = "livramento501";
 const char* mqtt_server = "iot.eclipse.org";
 
 const char* temp_analogica = "teste/temperatura/analogico";
