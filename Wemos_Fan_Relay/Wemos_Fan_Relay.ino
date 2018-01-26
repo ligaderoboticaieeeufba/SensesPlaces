@@ -90,20 +90,20 @@ void ligaVentilador(int valoranalogico){
   
 // Os valores de XX, YY e ZZ devem ser colocados após verificação experimental
 
-  if (valoranalogico >= 801 ){ // Para temperatura alta
+  if (valoranalogico >= 619 ){ // Para temperatura alta
     digitalWrite(r, HIGH);
     delay(10000);
     digitalWrite(r, LOW);
     delay(2000);
   }
 
-  else if(valoranalogico <= 800 && valoranalogico >= 101){ // Para Temperatura mediana
+  else if(valoranalogico <= 618 && valoranalogico >= 571){ // Para Temperatura mediana
     digitalWrite(r, HIGH);
     delay(3000);
     digitalWrite(r, LOW);
     delay(2000);
   }
-  else if(valoranalogico <= 100){ // Para temperatura baixa
+  else if(valoranalogico <= 570){ // Para temperatura baixa
     digitalWrite(r, HIGH);
     delay(1000);
     digitalWrite(r, LOW);
@@ -121,6 +121,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   for(int i = 0; i < length; i++){
     Serial.print((char)payload[i]);
   }
+  Serial.println("");
   Serial.println("--------------------------");
 
   int val = 0;

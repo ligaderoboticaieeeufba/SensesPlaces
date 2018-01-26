@@ -11,15 +11,11 @@ Thermistor temp(0);
 // --- MQTT ---
 
 #include <PubSubClient.h>
-
-const char* ssid = "C-137";
-const char* password = "livramento501";
 const char* mqtt_server = "iot.eclipse.org";
 
-const char* temp_analogico = "danca/temperatura/analogico/dancarino1";
-const char* temp_celsius = "danca/temperatura/celsius/dancarino1";
-const char* piezo_analogico = "danca/piezo/analogico/dancarino1";
-const char* batimento_coracao = "danca/infravermelho/analogico/dancarino1";
+const char* temp_analogico = "danca/termistor/analogico/fan";
+const char* piezo_analogico = "danca/piezo/analogico/";
+const char* batimento_coracao = "danca/infravermelho/analogico/";
 const char* status1 = "danca/status/dancarino/1";
 
 const char* mqtt_ClientID = "wemos1";
@@ -27,6 +23,10 @@ const char* mqtt_ClientID = "wemos1";
 // --- ESP8266 ---
 
 #include <ESP8266WiFi.h>
+
+
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -109,7 +109,7 @@ void publicaTemperatura(){
   Serial.print("A temperatura é: ");
   Serial.println(celsius);
   
-  client.publish(temp_celsius, String(celsius).c_str());
+  //client.publish(temp_celsius, String(celsius).c_str());
   
   analogico_temp = analogRead(Z);
   Serial.print("Leitura analógica da temperatura: ");
