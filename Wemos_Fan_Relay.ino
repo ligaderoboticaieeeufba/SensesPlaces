@@ -17,8 +17,8 @@ void loop(){
 
 // Os valores de XX, YY e ZZ devem ser colocados após verificação experimental
 
-	if (valoranalogico >= XX ){ // Para temperatura alta
-	  digitalWrite(r, HIGH);
+ if (valoranalogico >= XX ){ // Para temperatura alta
+    digitalWrite(r, HIGH);
     delay(10000);
     digitalWrite(r, LOW);
     delay(2000);
