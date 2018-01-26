@@ -1,5 +1,5 @@
 /*
-
+Esse código é o responsável por abrir as portas no C.I e enviar as medições para os wemos que contra os equipamentos.
 
 */
 
@@ -20,6 +20,7 @@ const char* temp_analogico = "danca/temperatura/analogico/dancarino1";
 const char* temp_celsius = "danca/temperatura/celsius/dancarino1";
 const char* piezo_analogico = "danca/piezo/analogico/dancarino1";
 const char* batimento_coracao = "danca/infravermelho/analogico/dancarino1";
+const char* status1 = "danca/status/dancarino/1";
 
 const char* mqtt_ClientID = "wemos1";
 
@@ -55,11 +56,20 @@ void setup_wifi() {
   Serial.println("Conectado ao WiFi");
   Serial.println("Endereço de IP: ");
   Serial.println(WiFi.localIP());
+
+  client.publish(status1, "Dançarino 1 conectado.", true);
 }
 
+// função para reconectar o wemos
 void reconecta(){
   while(!client.connected()){
-    client.connect(mqtt_ClientID);
+    client.publish(status1, "Reconectando...");
+    if(client.connect(mqtt_ClientID)){
+      client.publish(status1, "Conectado");
+    } else{
+      client.publish(status1, "Falha. Tentaremos novamente em 2 segundos.");
+      
+    }
   }
 }
 
