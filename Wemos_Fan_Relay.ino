@@ -7,7 +7,7 @@ No caso caso o pino D1 do Wemos correspondo ao pino 5 do Arduino. Ver mapeação
 em: https://github.com/esp8266/Arduino/issues/1243
    */
    
-#define r 5   
+#define r 5  // o pino 5 corresponde ao pino D1 no Wemos
 void setup (){
 	pinMode(r, OUTPUT);
 	digitalWrite(r, LOW);
