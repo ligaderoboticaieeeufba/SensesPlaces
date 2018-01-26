@@ -5,24 +5,20 @@ Esse Wemos não estará ligado diretamente ao relay e sim a um Arduino Uno que, 
 tone(), acionará um alto falante.
  
 */
-#define i 12
-#define o 13
+#include <Tone.h>
+Tone tone1;
+ 
 void setup() {
- pinMode(o, OUTPUT);
- pinMode(i, INPUT);
+  pinMode(12, INPUT);
+  tone1.begin(13);
 }
 
 void loop() {
-  digitalRead(i);
-  if(i == HIGH){
-    tone(440, o);
-    delay(500);
-    noTone(o); 
+  digitalRead(12);
+  if(digitalRead(12) == 1){
+    tone1.play(440); 
   }
-  else if(i == LOW){
-    noTone(o);
+  else {
+    tone1.stop();
   }
-  
-  
-
 }
