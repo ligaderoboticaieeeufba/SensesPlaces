@@ -11,8 +11,8 @@ em: https://github.com/esp8266/Arduino/issues/1243
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "........";
-const char* password = "........";
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 
 WiFiClient wemosd1mini;
 
@@ -50,7 +50,7 @@ void setupWiFi(){
 
   while(WiFi.status() != WL_CONNECTED){
     delay(500);
-    Serial.println(".");
+    Serial.print(".");
     
   }
 
@@ -135,6 +135,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 
 void loop(){
-  int valoranalogico; // valor a ser recebido pela transmissão de dados
+
+  if(!(client.connected())){
+    reconnect();
+  }
+
+  client.loop();
 
 }
