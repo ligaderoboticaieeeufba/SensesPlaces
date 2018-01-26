@@ -3,13 +3,17 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "C-137";
-const char* password = "livramento501";
+#define pinFio 5
+
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 const char* mqtt_server = "iot.eclipse.org";
 
-const char* teste_topico1 = "teste/temperatura/analogico";
-const char* teste_topico2 = "teste/temperatura/celsius";
-const char* teste_topico3 = "teste/piezo/analogico";
+const char* temp_analogica = "teste/temperatura/analogico";
+const char* temp_celsius = "teste/temperatura/celsius";
+const char* piezo_analogica = "teste/piezo/analogico";
+const char* batimento_coracao = "teste/coracao";
+//const char* temp_celsius = "teste/temperatura/celsius";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -18,11 +22,14 @@ char msg[50];
 int value = 0;
 
 void setup() {
-  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  //pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
+
+  pinMode(pinFio, OUTPUT);
+  
 }
 
 void setup_wifi() {
@@ -46,15 +53,149 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
+void ligaLuz(int val){
+
+  if(val > 0 && val < 100){
+      
+    digitalWrite(pinFio, HIGH);
+    delay(1000);
+    digitalWrite(pinFio, LOW);
+  
+  }
+
+  else if(val > 100 && val < 500){
+    
+    for(int i = 0; i < 3; i++){
+
+      digitalWrite(pinFio, HIGH);
+      delay(500);
+      digitalWrite(pinFio, LOW);
+      
+    }
+    
+  }
+
+  else if(val > 500 && val <= 1023){
+    
+    digitalWrite(pinFio, HIGH);
+    delay(3500);
+    digitalWrite(pinFio, LOW); 
+  
+  
+  }
+  delay(1000);
+}
+
+void ligaFumaca(int val){
+
+  
+  if(val < 100){
+      
+    digitalWrite(pinFio, HIGH);
+    delay(1000);
+    digitalWrite(pinFio, LOW);
+  
+  }
+
+  else if(val > 100 && val < 500){
+    
+    for(int i = 0; i < 3; i++){
+
+      digitalWrite(pinFio, HIGH);
+      delay(500);
+      digitalWrite(pinFio, LOW);
+      
+    }
+    
+  }
+
+  else if(val > 500 && val <= 1023){
+    
+    digitalWrite(pinFio, HIGH);
+    delay(3500);
+    digitalWrite(pinFio, LOW); 
+  
+  
+  }
+  
+
+}
+
+
+void ligaVentilador(int val){
+
+  
+  if(val < 100){
+      
+    digitalWrite(pinFio, HIGH);
+    delay(1000);
+    digitalWrite(pinFio, LOW);
+  
+  }
+
+  else if(val > 100 && val < 500){
+    
+    for(int i = 0; i < 3; i++){
+
+      digitalWrite(pinFio, HIGH);
+      delay(500);
+      digitalWrite(pinFio, LOW);
+      
+    }
+    
+  }
+
+  else if(val > 500 && val <= 1023){
+    
+    digitalWrite(pinFio, HIGH);
+    delay(3500);
+    digitalWrite(pinFio, LOW); 
+  
+  
+  }
+  
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
   
   Serial.print("Mensagem recebida [");
   Serial.print(topic);
-  Serial.print("] ");
+  Serial.print("]: ");
+
+  int val = 0;
+  //char msg[length];
+  String msg;
+  
+  for(int i = 0; i < length; i++){
+    msg[i] = (char)payload[i];
+  }
+
+  
+  for(int i = 0; i < length; i++){
+      val += (int)payload[i];
+   }
+
+  if(msg.equals(piezo_analogica)){
+    
+    ligaLuz(val);
+  }
+
+  else if(msg.equals(temp_analogica)){
+    ligaFumaca(val);
+  }
+
+  else if(msg.equals(batimento_coracao)){
+    ligaVentilador(val);
+  
+  }
+  
+  
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
   }
-  Serial.println();
+  
+  
+  Serial.println(msg);
   Serial.println("--------------------");
 
   
@@ -63,16 +204,18 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    //Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect("ESP8266Client")) {
-      Serial.println("connected");
+     //Serial.println("connected");
       // Once connected, publish an announcement...
       //client.publish(topico_exemplo, "hello world");
       // ... and resubscribe
-      client.subscribe(teste_topico1);
-      client.subscribe(teste_topico2);
-      client.subscribe(teste_topico3);
+      
+       client.subscribe(temp_analogica);
+      //client.subscribe(piezo_analogica);
+      //client.subscribe(coracao_batimento);
+      //client.subscribe(batimento_coracao);
       
     } else {
       Serial.print("failed, rc=");
@@ -88,9 +231,8 @@ void loop() {
   if (!client.connected()) {
     reconnect();
   }
-  client.loop();
-
   
+  client.loop();
 
   
 }
