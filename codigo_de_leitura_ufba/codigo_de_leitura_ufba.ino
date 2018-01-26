@@ -5,15 +5,14 @@
 
 #define pinFio 5
 
-const char* ssid = "AndroidAP";
-const char* password = "teste123";
+const char* ssid = "AndroidAP";   // nome da rede
+const char* password = "teste123";  // senha da rede 
 const char* mqtt_server = "iot.eclipse.org";
 
 const char* temp_analogica = "teste/temperatura/analogico";
-const char* temp_celsius = "teste/temperatura/celsius";
 const char* piezo_analogica = "teste/piezo/analogico";
 const char* batimento_coracao = "teste/coracao";
-//const char* temp_celsius = "teste/temperatura/celsius";
+const char* temp_celsius = "teste/temperatura/celsius";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -29,6 +28,7 @@ void setup() {
   client.setCallback(callback);
 
   pinMode(pinFio, OUTPUT);
+  digitalWrite(pinFio, LOW);
   
 }
 
@@ -166,9 +166,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   //char msg[length];
   String msg = String(topic);
   
-  //for(int i = 0; i < length; i++){
-    //msg[i] = (char)payload[i];
-  //}
+  for(int i = 0; i < length; i++){
+    msg[i] = (char)payload[i];
+  }
 
   
   for(int i = 0; i < length; i++){
