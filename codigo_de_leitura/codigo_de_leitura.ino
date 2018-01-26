@@ -164,7 +164,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   int val = 0;
   //char msg[length];
-  String msg;
+  String msg = String(topic);
   
   for(int i = 0; i < length; i++){
     msg[i] = (char)payload[i];
