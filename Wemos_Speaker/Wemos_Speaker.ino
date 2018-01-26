@@ -21,9 +21,9 @@ WiFiClient wemosd1mini;
 #include <PubSubClient.h>
 
 const char* mqtt_server = "iot.eclipse.org";
-const char* ir = "danca/infravermelho/analogico/dancarino/1";
-const char* wemos1 = "danca/status/wemos/dancarino/1";
-const char* esp = "dancarino1";
+const char* ir = "danca/infravermelho/analogico/speaker";
+const char* wemos1 = "danca/status/wemos/1/speaker";
+const char* esp = "speaker";
 
 PubSubClient client(wemosd1mini);
 
@@ -65,6 +65,27 @@ void setupWiFi(){
   
 }
 
+void reconnect(){
+
+  while(!(client.connected())){
+
+    client.publish(wemos1, "Reconectando...", true);
+
+    if(client.connect(esp)){
+      client.publish(wemos1, "Conectado");
+      client.subscribe(ir);
+    } else {
+      
+      String clientstatus = String(client.state()).c_str();
+      String erro = "Falha ao reconectar, rc = " + clientstatus;
+      client.publish(wemos1, String(erro).c_str());
+      delay(1500);
+      client.publish(wemos1, "Tentaremos de novo em 2 segundos");
+      delay(2000);
+      
+    }
+  } 
+}
 
 void passaValor(int valorAnalogico){
   
@@ -101,27 +122,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
   
 }
 
-void reconnect(){
-
-  while(!(client.connected())){
-
-    client.publish(wemos1, "Reconectando...", true);
-
-    if(client.connect(esp)){
-      client.publish(wemos1, "Conectado");
-      client.subscribe(ir);
-    } else {
-      
-      String clientstatus = String(client.state()).c_str();
-      String erro = "Falha ao reconectar, rc = " + clientstatus;
-      client.publish(wemos1, String(erro).c_str());
-      delay(1500);
-      client.publish(wemos1, "Tentaremos de novo em 2 segundos");
-      delay(2000);
-      
-    }
-  } 
-}
 
 void loop(){
 

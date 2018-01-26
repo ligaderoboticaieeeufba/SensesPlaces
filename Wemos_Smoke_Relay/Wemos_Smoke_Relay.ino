@@ -1,12 +1,11 @@
-/* Código para ligação do Wemos no Relé e ativação do ventilador.
-O sensor a ser utilizado para controlar o ventilador será um Termistor
+/* Código para ligação do Wemos no Relé e ativação da Máquina de Fumaça.
+O sensor a ser utilizado para controlar a Máquina de Fumaça será um Piezo.
 
 
 Usar a saída 'r' por questão de pinagem diferente do Wemos D1 mini para o Arduino. 
 No caso caso o pino D1 do Wemos correspondo ao pino 5 do Arduino. Ver mapeação das pinagens 
 em: https://github.com/esp8266/Arduino/issues/1243
    */
-
 
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
@@ -20,13 +19,14 @@ WiFiClient wemosd1mini;
 #include <PubSubClient.h>
 
 const char* mqtt_server = "iot.eclipse.org";
-const char* termistor = "danca/termistor/analogico/fan";
-const char* wemos3 = "danca/status/wemos/3/fan";
-const char* esp = "termistor";
+const char* piezo = "danca/piezo/analogico/fumaca";
+const char* wemos2 = "danca/status/wemos/2/fumaca";
+const char* esp = "fumaca";
 
 PubSubClient client(wemosd1mini);
 
-#define r 5   
+   
+#define r 5 // o pino 5 corresponde ao pino D1 no Wemos  
 void setup (){
 
   Serial.begin(115200);
@@ -59,55 +59,43 @@ void setupWiFi(){
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  client.publish(wemos3, "Wemos do ventilador conectado", true);
-
+  client.publish(wemos2, "Wemos da fumaça conectado", true);
+  
 }
 
 void reconnect(){
 
   while(!(client.connected())){
 
-    client.publish(wemos3, "Reconectando...", true);
+    client.publish(wemos2, "Reconectando...", true);
 
     if(client.connect(esp)){
-      client.publish(wemos3, "Conectado");
-      client.subscribe(termistor);
+      client.publish(wemos2, "Conectado");
+      client.subscribe(piezo);
     } else {
       
       String clientstatus = String(client.state()).c_str();
       String erro = "Falha ao reconectar, rc = " + clientstatus;
-      client.publish(wemos3, String(erro).c_str());
+      client.publish(wemos2, String(erro).c_str());
       delay(1500);
-      client.publish(wemos3, "Tentaremos de novo em 2 segundos");
+      client.publish(wemos2, "Tentaremos de novo em 2 segundos");
       delay(2000);
       
     }
   } 
 }
 
-void ligaVentilador(int valoranalogico){
+void ligaFumaca(int valoranalogico){
 
-  
-// Os valores de XX, YY e ZZ devem ser colocados após verificação experimental
 
-  if (valoranalogico >= 801 ){ // Para temperatura alta
+ /* O valor de XX deve ser bastante alto, afim de fazer a maquina de fumaça funcionar só em grande
+ variação de saída analógica.
+*/
+  if (valoranalogico >= 900 ){  
     digitalWrite(r, HIGH);
-    delay(10000);
+    delay(2000);
     digitalWrite(r, LOW);
     delay(2000);
-  }
-
-  else if(valoranalogico <= 800 && valoranalogico >= 101){ // Para Temperatura mediana
-    digitalWrite(r, HIGH);
-    delay(3000);
-    digitalWrite(r, LOW);
-    delay(2000);
-  }
-  else if(valoranalogico <= 100){ // Para temperatura baixa
-    digitalWrite(r, HIGH);
-    delay(1000);
-    digitalWrite(r, LOW);
-    delay(4000);
   }
   
 }
@@ -129,12 +117,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
     val += (int)payload[i];
   }
 
-  ligaVentilador(val);
+  ligaFumaca(val);
   
-}  
-
+}
 
 void loop(){
-  int valoranalogico; // valor a ser recebido pela transmissão de dados
+  
+  if(!(client.connected())){
+    reconnect();
+  }
+  
+   client.loop();
 
 }
