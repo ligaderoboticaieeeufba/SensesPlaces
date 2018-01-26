@@ -93,7 +93,7 @@ void ligaFumaca(int valoranalogico){
 */
   if (valoranalogico >= 95 ){  
     digitalWrite(r, HIGH);
-    delay(2000);
+    delay(3000);
     digitalWrite(r, LOW);
     delay(2000);
   }

@@ -16,7 +16,7 @@ const char* mqtt_server = "iot.eclipse.org";
 
 const char* temp_analogico = "danca/termistor/analogico/fan";
 const char* piezo_analogico = "danca/piezo/analogico/fumaca";
-const char* batimento_coracao = "danca/infravermelho/analogico/speaker";
+const char* batimento_coracao = "danca/infravermelho/analogico/luz";
 const char* status1 = "danca/status/dancarino/1";
 
 const char* mqtt_ClientID = "wemos1";
@@ -25,8 +25,8 @@ const char* mqtt_ClientID = "wemos1";
 
 #include <ESP8266WiFi.h>
 
-const char* ssid = "Marcus";
-const char* password = "vinicius";
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -170,8 +170,8 @@ void loop() {
     reconecta();
   }
   
-  //publicaTemperatura();
-  publicaBatimentos();
-  //publicaVibracoes();
+  publicaTemperatura();
+  //publicaBatimentos();
+ // publicaVibracoes();
  
 }

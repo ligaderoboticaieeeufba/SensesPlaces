@@ -12,8 +12,8 @@ em: https://github.com/esp8266/Arduino/issues/1243
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "Marcus";
-const char* password = "vinicius";
+const char* ssid = "AndroidAP";
+const char* password = "teste123";
 
 WiFiClient wemosd1mini;
 
@@ -21,8 +21,8 @@ WiFiClient wemosd1mini;
 #include <PubSubClient.h>
 
 const char* mqtt_server = "iot.eclipse.org";
-const char* ir = "danca/infravermelho/analogico/speaker";
-const char* wemos1 = "danca/status/wemos/1/speaker";
+const char* ir = "danca/infravermelho/analogico/luz";
+const char* wemos1 = "danca/status/wemos/1/luz";
 const char* esp = "speaker";
 
 PubSubClient client(wemosd1mini);
@@ -87,20 +87,32 @@ void reconnect(){
   } 
 }
 
-void passaValor(int valor){
+void ligaLuz(int valor){
   
  /* O valor de XX deve ser bastante alto, afim de fazer a maquina de fumaça funcionar só em grande
  variação de saída analógica.
-*/
+*/ 
 
-  if (valor >= 70 ){  
+  if(valor <= 120){
     digitalWrite(r, HIGH);
-    Serial.println("estou enviando o sinal.");
-  }
-  else{
-    //Serial.println("Estou desligando o treco.");
+    delay(2000);
     digitalWrite(r, LOW);
-  }  
+    delay(4000);
+  }
+  else if(valor >= 121 && valor <= 780) {
+    digitalWrite(r, HIGH);
+    delay(3000);
+    digitalWrite(r, LOW);
+    delay(6000);
+  }
+
+  else if(valor >= 781){
+    digitalWrite(r, HIGH);
+    delay(1000);
+    digitalWrite(r, LOW);
+    delay(2000);
+  }
+     
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
@@ -121,7 +133,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(val);
   Serial.println("--------------------------");
 
- passaValor(val);
+ ligaLuz(val);
   
 }
 
