@@ -9,17 +9,12 @@ const char* ssid = "C-137";
 const char* password = "livramento501";
 const char* mqtt_server = "iot.eclipse.org";
 
-const char* temp_analogica = "teste/temperatura/analogico";
-const char* temp_celsius = "teste/temperatura/celsius";
-const char* piezo_analogica = "teste/piezo/analogico";
-const char* batimento_coracao = "teste/coracao";
-//const char* temp_celsius = "teste/temperatura/celsius";
+const char* temp_analogico = "danca/temperatura/dancarino1";
+const char* piezo_analogico = "danca/piezo/analogico/dancarino1";
+const char* batimento_coracao = "danca/infravermelho/analogico/dancarino1";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-long lastMsg = 0;
-char msg[50];
-int value = 0;
 
 void setup() {
   //pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
@@ -29,6 +24,7 @@ void setup() {
   client.setCallback(callback);
 
   pinMode(pinFio, OUTPUT);
+  digitalWrite(pinFio, LOW);
   
 }
 
@@ -162,42 +158,33 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print("]: ");
 
-  int val = 0;
-  //char msg[length];
-  String msg = String(topic);
-  
   for(int i = 0; i < length; i++){
-    msg[i] = (char)payload[i];
+    Serial.print((char)payload[i]);
   }
-
   
+  Serial.println("--------------------------");
+
+  int val = 0;
+  String topico = String(topico);
+
   for(int i = 0; i < length; i++){
       val += (int)payload[i];
    }
 
-  if(msg.equals(piezo_analogica)){
+  if(topico.equals(piezo_analogico)){
     
     ligaLuz(val);
   }
 
-  else if(msg.equals(temp_analogica)){
+  else if(topico.equals(temp_analogico)){
     ligaFumaca(val);
   }
 
-  else if(msg.equals(batimento_coracao)){
+  else if(topico.equals(batimento_coracao)){
     ligaVentilador(val);
   
   }
-  
-  
-  for (int i = 0; i < length; i++) {
-    Serial.print((char)payload[i]);
-  }
-  
-  
-  Serial.println(msg);
-  Serial.println("--------------------");
-
+ 
   
 }
 
@@ -212,7 +199,7 @@ void reconnect() {
       //client.publish(topico_exemplo, "hello world");
       // ... and resubscribe
       
-       client.subscribe(temp_analogica);
+       client.subscribe(temp_analogico);
       //client.subscribe(piezo_analogica);
       //client.subscribe(coracao_batimento);
       //client.subscribe(batimento_coracao);
