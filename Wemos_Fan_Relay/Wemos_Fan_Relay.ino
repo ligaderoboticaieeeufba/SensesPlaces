@@ -2,19 +2,19 @@
 O sensor a ser utilizado para controlar o ventilador será um Termistor
 
 
-Usar a saída 'r' por questão de pinagem diferente do Wemos D1 mini para o Arduino. 
-No caso caso o pino D1 do Wemos correspondo ao pino 5 do Arduino. Ver mapeação das pinagens 
+Usar a saída 'r' por questão de pinagem diferente do Wemos D1 mini para o Arduino.
+No caso caso o pino D1 do Wemos correspondo ao pino 5 do Arduino. Ver mapeação das pinagens
 em: https://github.com/esp8266/Arduino/issues/1243
-   */
+*/
 
 
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "AndroidAP";
-const char* password = "teste123";
+const char* ssid = "";           // Wi-fi name
+const char* password = "";      // Wi-fi password
 
-WiFiClient wemosd1mini;
+WiFiClient wemosd1mini;         // Wi-fi object
 
 // --- MQTT ---
 #include <PubSubClient.h>
@@ -26,15 +26,15 @@ const char* esp = "termistor";
 
 PubSubClient client(wemosd1mini);
 
-#define r 5   
+#define r 5 // The pin 5 corresponding to pin D1 in Wemos
 void setup (){
 
   Serial.begin(115200);
- 
+
   setupWiFi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
-  
+
 	pinMode(r, OUTPUT);
 	digitalWrite(r, LOW);
 }
@@ -51,7 +51,7 @@ void setupWiFi(){
   while(WiFi.status() != WL_CONNECTED){
     delay(500);
     Serial.print(".");
-    
+
   }
 
   Serial.println("");
@@ -73,21 +73,21 @@ void reconnect(){
       client.publish(wemos3, "Conectado");
       client.subscribe(termistor);
     } else {
-      
+
       String clientstatus = String(client.state()).c_str();
       String erro = "Falha ao reconectar, rc = " + clientstatus;
       client.publish(wemos3, String(erro).c_str());
       delay(1500);
       client.publish(wemos3, "Tentaremos de novo em 2 segundos");
       delay(2000);
-      
+
     }
-  } 
+  }
 }
 
 void ligaVentilador(int valoranalogico){
 
-  
+
 // Os valores de XX, YY e ZZ devem ser colocados após verificação experimental
 
   if (valoranalogico >= 619 ){ // Para temperatura alta
@@ -109,11 +109,11 @@ void ligaVentilador(int valoranalogico){
     digitalWrite(r, LOW);
     delay(4000);
   }
-  
+
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
-  
+
   Serial.print("Mensagem recebida [");
   Serial.print(topic);
   Serial.print("]: ");
@@ -131,8 +131,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 
   ligaVentilador(val);
-  
-}  
+
+}
 
 
 void loop(){
