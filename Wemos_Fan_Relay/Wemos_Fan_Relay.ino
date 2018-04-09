@@ -11,8 +11,9 @@ em: https://github.com/esp8266/Arduino/issues/1243
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
 
-const char* ssid = "";           // Wi-fi name
-const char* password = "";      // Wi-fi password
+const char* ssid = "sensesplaces";           // Wi-fi name
+const char* password = "sensesplaces";      // Wi-fi password
+
 
 WiFiClient wemosd1mini;         // Wi-fi object
 
