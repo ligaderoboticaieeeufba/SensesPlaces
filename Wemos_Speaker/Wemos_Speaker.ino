@@ -7,7 +7,10 @@ tone(), acionará um alto falante.
 Usar a saída 'r' por questão de pinagem diferente do Wemos D1 mini para o Arduino.
 No caso caso o pino D1 do Wemos correspondo ao pino 5 do Arduino. Ver mapeação das pinagens
 em: https://github.com/esp8266/Arduino/issues/1243
-   */
+
+This code is a test using Wemos D1 Mini with speakers (using Tone library)
+
+*/
 
 // --- ESP8266 ---
 #include <ESP8266WiFi.h>
