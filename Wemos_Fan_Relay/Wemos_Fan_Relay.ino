@@ -113,8 +113,12 @@ void ligaVentilador(int valoranalogico){
 
 }
 
+
+// This function is called when a message is received
 void callback(char* topic, byte* payload, unsigned int length) {
 
+
+  // show when a message is received on 'topic'
   Serial.print("Mensagem recebida [");
   Serial.print(topic);
   Serial.print("]: ");
