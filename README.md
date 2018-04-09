@@ -15,11 +15,4 @@ To compile and run the codes above you must install the following libraries:
 * [MQTT client library](https://github.com/knolleary/pubsubclient.git)
 * [Thermistor library](https://www.arduinolibraries.info/libraries/thermistor)
 
-PS.: This project was made using [Arduino IDE](https://www.arduino.cc/en/Main/Software) v1.8.3 . We recommend using the most up-to-date version libraries and Arduino IDE.
-
-
-
-
-
-
-
+PS.: This project was developed using [Arduino IDE](https://www.arduino.cc/en/Main/Software) v1.8.3 . We recommend using the most up-to-date version libraries and Arduino IDE.
